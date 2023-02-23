@@ -10,23 +10,23 @@ public class EmployeeDTO implements Serializable {
 	private Long id;
 	private String name;
 	private String email;
-	private DepartmentDTO department;
+	private String departmentName;
 	
 	public EmployeeDTO() {
 	}
 
-	public EmployeeDTO(Long id, String name, String email, DepartmentDTO department) {
+	public EmployeeDTO(Long id, String name, String email, String departmentName) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
-		this.department = department;
+		this.departmentName = departmentName;
 	}
 
 	public EmployeeDTO(Employee entity) {
 		id = entity.getId();
 		name = entity.getName();
 		email = entity.getEmail();
-		department  = new DepartmentDTO(entity.getDepartment());
+		departmentName  = entity.getDepartment().getName() ;
 	}
 
 	public Long getId() {
@@ -53,14 +53,15 @@ public class EmployeeDTO implements Serializable {
 		this.email = email;
 	}
 
-	public DepartmentDTO getDepartment() {
-		return department;
+ 
+	public String getDepartmentName() {
+		return departmentName;
 	}
 
-	public void setDepartment(DepartmentDTO department) {
-		this.department = department;
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

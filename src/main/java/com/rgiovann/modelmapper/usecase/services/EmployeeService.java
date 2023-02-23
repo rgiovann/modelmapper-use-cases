@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,10 +25,19 @@ public class EmployeeService {
 	
 	@Autowired 
 	private ModelMapper employeeModelMapper;
+	
+
 
 	
 	@Transactional(readOnly = true)
 	public 	Page<EmployeeDTO> findAllPaged(Pageable pageRequest) {
+	    	
+			TypeMap<Employee, EmployeeDTO> propertyMapper = employeeModelMapper.createTypeMap(Employee.class, EmployeeDTO.class);
+	    	
+			propertyMapper.addMappings(
+	    		      mapper -> mapper.map(src -> src.getDepartment().getName(), EmployeeDTO::setDepartmentName)
+	    		    );
+ 			
 			Page<Employee> page = employeeRepository.findAll(pageRequest);
 			return page.map(p -> {EmployeeDTO employeeDTO = employeeModelMapper.map(p, EmployeeDTO.class); 
  										  	  return employeeDTO;
@@ -49,5 +59,7 @@ public class EmployeeService {
 			return employeeDTO;
  
 	}	
+	
+	
  
 }
